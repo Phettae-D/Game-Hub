@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Sign Up - Game Hub</title>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans">
+    
+    <!-- Navigation Bar -->
+    <div class="w-full bg-gray-800 border-b border-gray-700 p-4 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <div class="text-3xl font-bold">
+                <img src="/Image/WebLogo.png" alt="Web Logo" class="h-12 w-12" />
+            </div>
+            <a href="HomePage.html" class="text-2xl font-semibold hover:text-blue-400">Game Hub</a>
+        </div>
+    </div>
+
+    <!-- Sign Up Container -->
+    <div class="min-h-screen flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md">
+            
+            <!-- Sign Up Box -->
+            <div class="bg-gray-800 border border-gray-700 rounded-lg p-8 shadow-xl">
+                
+                <!-- Header -->
+                <div class="text-center mb-8">
+                    <h1 class="text-4xl font-bold mb-2">Create Account</h1>
+                    <p class="text-gray-400">Join Game Hub and start playing</p>
+                </div>
+
+                <!-- Sign Up Form -->
+                <form id="signUpForm" class="space-y-5">
+                    
+                    <!-- Full Name Input -->
+                    <div>
+                        <label for="fullName" class="block text-sm font-semibold mb-2">Full Name</label>
+                        <input 
+                            id="fullName" 
+                            type="text" 
+                            placeholder="Enter your full name" 
+                            required
+                            class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+                        />
+                    </div>
+
+                    <!-- Email Input -->
+                    <div>
+                        <label for="email" class="block text-sm font-semibold mb-2">Email Address</label>
+                        <input 
+                            id="email" 
+                            type="email" 
+                            placeholder="Enter your email" 
+                            required
+                            class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+                        />
+                        <p id="emailError" class="text-red-400 text-xs mt-1 hidden">Email already exists</p>
+                    </div>
+
+                    <!-- Username Input -->
+                    <div>
+                        <label for="username" class="block text-sm font-semibold mb-2">Username</label>
+                        <input 
+                            id="username" 
+                            type="text" 
+                            placeholder="Choose a username" 
+                            required
+                            class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+                        />
+                        <p class="text-gray-400 text-xs mt-1">3-20 characters, letters and numbers only</p>
+                    </div>
+
+                    <!-- Password Input -->
+                    <div>
+                        <label for="password" class="block text-sm font-semibold mb-2">Password</label>
+                        <div class="relative">
+                            <input 
+                                id="password" 
+                                type="password" 
+                                placeholder="Create a strong password" 
+                                required
+                                class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+                                oninput="checkPasswordStrength()"
+                            />
+                            <button 
+                                type="button" 
+                                onclick="togglePasswordVisibility('password')"
+                                class="absolute right-3 top-3 text-gray-400 hover:text-gray-200"
+                            >
+                                <span id="eyeIcon1">👁️</span>
+                            </button>
+                        </div>
+                        <!-- Password Strength Indicator -->
+                        <div class="mt-2">
+                            <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
+                                <div id="passwordStrengthBar" class="h-full w-0 bg-red-600 transition-all"></div>
+                            </div>
+                            <p id="passwordStrengthText" class="text-xs text-gray-400 mt-1">Weak</p>
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password Input -->
+                    <div>
+                        <label for="confirmPassword" class="block text-sm font-semibold mb-2">Confirm Password</label>
+                        <div class="relative">
+                            <input 
+                                id="confirmPassword" 
+                                type="password" 
+                                placeholder="Confirm your password" 
+                                required
+                                class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+                            />
+                            <button 
+                                type="button" 
+                                onclick="togglePasswordVisibility('confirmPassword')"
+                                class="absolute right-3 top-3 text-gray-400 hover:text-gray-200"
+                            >
+                                <span id="eyeIcon2">👁️</span>
+                            </button>
+                        </div>
+                        <p id="passwordMatchError" class="text-red-400 text-xs mt-1 hidden">Passwords do not match</p>
+                    </div>
+
+                    <!-- Terms & Conditions -->
+                    <div class="flex items-start space-x-2">
+                        <input 
+                            type="checkbox" 
+                            id="termsAccept" 
+                            required
+                            class="w-4 h-4 bg-gray-700 border border-gray-600 rounded cursor-pointer mt-1"
+                        />
+                        <label for="termsAccept" class="text-sm text-gray-400 cursor-pointer">
+                            I agree to the <a href="#" class="text-blue-400 hover:text-blue-300">Terms of Service</a> and 
+                            <a href="#" class="text-blue-400 hover:text-blue-300">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div id="errorMessage" class="hidden bg-red-900 border border-red-600 text-red-200 px-4 py-3 rounded-lg text-sm"></div>
+
+                    <!-- Success Message -->
+                    <div id="successMessage" class="hidden bg-green-900 border border-green-600 text-green-200 px-4 py-3 rounded-lg text-sm"></div>
+
+                    <!-- Sign Up Button -->
+                    <button 
+                        type="submit"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200 transform hover:scale-105"
+                    >
+                        Create Account
+                    </button>
+                </form>
+
+                <!-- Divider -->
+                <div class="relative my-8">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-600"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-gray-800 text-gray-400">Or sign up with</span>
+                    </div>
+                </div>
+
+                <!-- Social Sign Up -->
+                <div class="space-y-3">
+                    <button type="button" class="w-full bg-gray-700 hover:bg-gray-600 border border-gray-600 rounded-lg px-4 py-3 font-semibold transition flex items-center justify-center space-x-2">
+                        <span>🔵</span>
+                        <span>Facebook</span>
+                    </button>
+                    <button type="button" class="w-full bg-gray-700 hover:bg-gray-600 border border-gray-600 rounded-lg px-4 py-3 font-semibold transition flex items-center justify-center space-x-2">
+                        <span>🔴</span>
+                        <span>Google</span>
+                    </button>
+                </div>
+
+                <!-- Sign In Link -->
+                <div class="text-center mt-8">
+                    <p class="text-gray-400">Already have an account? 
+                        <a href="LogIn.html" class="text-blue-400 hover:text-blue-300 font-semibold">Sign in here</a>
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Footer Info
+            <div class="text-center mt-8 text-gray-500 text-sm">
+                <p>Protected by reCAPTCHA and subject to the</p>
+                <p>
+                    <a href="#" class="text-blue-400 hover:text-blue-300">Privacy Policy</a> and 
+                    <a href="#" class="text-blue-400 hover:text-blue-300">Terms of Service</a>
+                </p>
+            </div> -->
+
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        function togglePasswordVisibility(fieldId) {
+            const passwordInput = document.getElementById(fieldId);
+            const eyeIcon = document.getElementById(fieldId === 'password' ? 'eyeIcon1' : 'eyeIcon2');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.textContent = '👁️';
+            }
+        }
+
+        // Check password strength
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthBar = document.getElementById('passwordStrengthBar');
+            const strengthText = document.getElementById('passwordStrengthText');
+            
+            let strength = 0;
+            
+            if (password.length >= 6) strength += 25;
+            if (password.length >= 8) strength += 25;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 25;
+            if (/[0-9]/.test(password)) strength += 12.5;
+            if (/[!@#$%^&*]/.test(password)) strength += 12.5;
+
+            strengthBar.style.width = strength + '%';
+
+            if (strength < 25) {
+                strengthBar.className = 'h-full w-0 bg-red-600 transition-all';
+                strengthText.textContent = 'Weak';
+                strengthText.className = 'text-xs text-red-400 mt-1';
+            } else if (strength < 50) {
+                strengthBar.className = 'h-full bg-orange-600 transition-all';
+                strengthText.textContent = 'Fair';
+                strengthText.className = 'text-xs text-orange-400 mt-1';
+            } else if (strength < 75) {
+                strengthBar.className = 'h-full bg-yellow-600 transition-all';
+                strengthText.textContent = 'Good';
+                strengthText.className = 'text-xs text-yellow-400 mt-1';
+            } else {
+                strengthBar.className = 'h-full bg-green-600 transition-all';
+                strengthText.textContent = 'Strong';
+                strengthText.className = 'text-xs text-green-400 mt-1';
+            }
+        }
+
+        // Validate username format
+        function validateUsername(username) {
+            return /^[a-zA-Z0-9]{3,20}$/.test(username);
+        }
+
+        // Handle sign up form submission
+        document.getElementById('signUpForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const termsAccept = document.getElementById('termsAccept').checked;
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+
+            // Clear previous messages
+            errorMessage.classList.add('hidden');
+            successMessage.classList.add('hidden');
+
+            // Validation
+            if (!fullName || !email || !username || !password || !confirmPassword) {
+                errorMessage.textContent = '❌ Please fill in all fields';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+
+            if (!validateUsername(username)) {
+                errorMessage.textContent = '❌ Username must be 3-20 characters (letters and numbers only)';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                errorMessage.textContent = '❌ Please enter a valid email address';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+
+            if (password.length < 6) {
+                errorMessage.textContent = '❌ Password must be at least 6 characters';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                document.getElementById('passwordMatchError').classList.remove('hidden');
+                return;
+            } else {
+                document.getElementById('passwordMatchError').classList.add('hidden');
+            }
+
+            if (!termsAccept) {
+                errorMessage.textContent = '❌ You must accept the terms and conditions';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                // Send sign up request to server
+                const res = await fetch('http://localhost:3000/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        fullName, 
+                        email, 
+                        username, 
+                        password 
+                    })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    successMessage.textContent = '✅ Account created successfully! Redirecting to login...';
+                    successMessage.classList.remove('hidden');
+
+                    // Redirect to login after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = 'LogIn.html';
+                    }, 2000);
+                } else {
+                    errorMessage.textContent = `❌ ${data.message || 'Error creating account'}`;
+                    errorMessage.classList.remove('hidden');
+                }
+            } catch (err) {
+                console.error(err);
+                errorMessage.textContent = '❌ Connection error. Please check if the server is running.';
+                errorMessage.classList.remove('hidden');
+            }
+        });
+
+        // Check password match on input
+        document.getElementById('confirmPassword').addEventListener('input', () => {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const passwordMatchError = document.getElementById('passwordMatchError');
+
+            if (confirmPassword && password !== confirmPassword) {
+                passwordMatchError.classList.remove('hidden');
+            } else {
+                passwordMatchError.classList.add('hidden');
+            }
+        });
+    </script>
+
+</body>
+</html>

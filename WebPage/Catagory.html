@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Game Catalog</title>
+</head>
+
+<body class="bg-gray-900 text-gray-100 font-sans">
+    <!-- Navigation Bar -->
+    <div class="w-full bg-gray-800 border-b border-gray-700 p-4 flex items-center justify-between">
+        <div class="flex items-center space-x-10">
+            <div class="text-3xl font-bold">
+                <img src="/Image/WebLogo.png" alt="Web Logo" class="h-12 w-12" />
+            </div>
+            <a href="HomePage.html" class="text-2xl font-semibold hover:text-blue-400">Home</a>
+            <a href="Catagory.html" class="text-2xl font-semibold hover:text-blue-400">Catalog</a>
+            <a href="#" class="text-2xl font-semibold hover:text-blue-400">Developer Logs</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <input type="text" placeholder="Search"
+                class="w-64 bg-gray-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-blue-600" />
+            <a href="Profile.html" class="w-12 h-12 rounded-full bg-gray-600 hover:bg-gray-500"></a>
+        </div>
+    </div>
+
+    <!-- Side Navigation -->
+    <div class="flex">
+        <div class="w-64 bg-gray-800 min-h-screen p-6 border-r border-gray-700 flex flex-col justify-between">
+            <div>
+                <button id="tagsBtn"
+                    class="w-full bg-blue-600 hover:bg-blue-700 px-4 py-3 rounded-lg mb-6 text-left font-bold text-lg"
+                    onclick="toggleTags()">Tags ▼</button>
+
+                <ul id="tagsList" class="space-y-2 text-lg hidden">
+                    <li><button class="tag-btn bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded w-full text-left"
+                            onclick="filterGames('RPG')">RPG</button></li>
+                    <li><button class="tag-btn bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded w-full text-left"
+                            onclick="filterGames('Action')">Action</button></li>
+                    <li><button class="tag-btn bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded w-full text-left"
+                            onclick="filterGames('Visual Novel')">Visual Novel</button></li>
+                    <li><button class="tag-btn bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded w-full text-left"
+                            onclick="filterGames('Card Game')">Card Game</button></li>
+                    <li><button class="tag-btn bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded w-full text-left"
+                            onclick="filterGames('Puzzle')">Puzzle</button></li>
+                    <li><button class="tag-btn bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded w-full text-left"
+                            onclick="filterGames('Sport')">Sport</button></li>
+                </ul>
+
+                <button class="w-full bg-green-600 hover:bg-green-700 px-4 py-3 rounded-lg mt-6 text-left font-bold text-lg"
+                    onclick="showAllGames()">Show All Games</button>
+            </div>
+
+            <footer class="pt-8 space-y-2 text-sm border-t border-gray-700">
+                <p>Email: Phonethavixay@gmail.com</p>
+                <p>Tel: +856 2051557452</p>
+            </footer>
+        </div>
+
+        <!-- Main Content -->
+        <div id="gameContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6 flex-1">
+            
+        </div>
+    </div>
+
+    <script>
+        let allGames = [];
+        const API_URL = 'http://localhost:3000';
+
+        // Fetch games from MongoDB
+        async function loadGames() {
+            try {
+                const res = await fetch(`${API_URL}/games`);
+                
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                
+                allGames = await res.json();
+                console.log("Games loaded:", allGames);
+                displayGames(allGames);
+            } catch (err) {
+                console.error("Error loading games:", err);
+                document.getElementById('gameContainer').innerHTML = 
+                    `<p class="text-red-500">Failed to load games. Make sure the server is running on ${API_URL}</p>`;
+            }
+        }
+
+        // Display games as cards
+        function displayGames(games) {
+            const gameContainer = document.getElementById('gameContainer');
+            gameContainer.innerHTML = '';
+
+            if (games.length === 0) {
+                gameContainer.innerHTML = '<p class="text-gray-400">No games found</p>';
+                return;
+            }
+
+            games.forEach(game => {
+                const gameLink = document.createElement('a');
+                gameLink.href = 'javascript:void(0)';
+                gameLink.className = 'game-card block rounded-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer';
+                gameLink.setAttribute('data-category', game.gameType);
+                gameLink.onclick = () => openGamePage(game);
+                gameLink.innerHTML = `
+                    <div class="h-48 bg-gray-700 flex items-center justify-center text-3xl overflow-hidden">
+                        ${game.coverImage ? `<img src="${API_URL}/${game.coverImage}" alt="${game.title}" class="w-full h-full object-cover hover:scale-110 transition-transform" />` : '<span class="text-gray-400">Game Logo</span>'}
+                    </div>
+                    <div class="p-4 bg-gray-700 border border-gray-600">
+                        <h3 class="text-lg font-bold mb-2">${game.title}</h3>
+                        <p class="text-gray-300 text-sm mb-3">${game.shortDesc || 'No description'}</p>
+                        <p class="text-xs text-blue-400 mb-3">${game.gameType}</p>
+                        <div class="flex gap-2 flex-wrap">
+                            ${game.tags ? game.tags.map(tag => `<span class="text-xs bg-gray-600 px-2 py-1 rounded">${tag}</span>`).join('') : ''}
+                        </div>
+                        <button class="mt-4 w-full bg-cyan-600 hover:bg-cyan-700 px-3 py-2 rounded text-sm font-bold">
+                            Play
+                        </button>
+                    </div>
+                `;
+                gameContainer.appendChild(gameLink);
+            });
+        }
+
+        // Open Game Page
+        function openGamePage(game) {
+            // Store game data in sessionStorage
+            sessionStorage.setItem('selectedGame', JSON.stringify(game));
+            // Navigate to game page
+            window.location.href = 'GamePage.html';
+        }
+
+        // Load games when page loads
+        loadGames();
+
+        function toggleTags() {
+            const tagsList = document.getElementById('tagsList');
+            const tagsBtn = document.getElementById('tagsBtn');
+            tagsList.classList.toggle('hidden');
+            tagsBtn.textContent = tagsList.classList.contains('hidden') ? 'Tags ▼' : 'Tags ▲';
+        }
+
+        function filterGames(category) {
+            const filtered = allGames.filter(game => game.gameType === category);
+            displayGames(filtered);
+        }
+
+        function showAllGames() {
+            displayGames(allGames);
+        }
+    </script>
+</body>
+
+</html>

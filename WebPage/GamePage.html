@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Game Page</title>
+</head>
+
+<body class="bg-gray-900 text-white font-sans">
+
+    <!-- Navigation Bar -->
+    <div class="w-full bg-gray-800 border-b border-gray-700 p-4 flex items-center justify-between">
+        <div class="flex items-center space-x-10">
+            <div class="text-3xl font-bold">
+                <img src="/Image/WebLogo.png" alt="Web Logo" class="h-12 w-12" />
+            </div>
+            <a href="HomePage.html" class="text-2xl font-semibold hover:text-blue-400">Home</a>
+            <a href="Catagory.html" class="text-2xl font-semibold hover:text-blue-400">Catalog</a>
+            <a href="#" class="text-2xl font-semibold hover:text-blue-400">Developer Logs</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <input type="text" placeholder="Search"
+                class="w-64 bg-gray-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-blue-600" />
+            <a href="Profile.html" class="w-12 h-12 rounded-full bg-gray-600 hover:bg-gray-500"></a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="w-[80%] mx-auto mt-10 bg-gray-800 p-6 border border-blue-600 rounded-lg">
+
+        <div class="grid grid-cols-4 gap-4">
+
+            <!-- Left: Game Description -->
+            <div class="col-span-2 bg-gray-700 h-[850px] p-6 overflow-y-auto rounded-lg border border-gray-600">
+                <h2 id="gameTitle" class="text-3xl font-bold mb-4">Game Title</h2>
+                <p id="gameType" class="text-lg text-blue-400 mb-4">Type: RPG</p>
+                
+                <!-- Developer/Creator Credits
+                <div class="mb-6 bg-gray-600 p-4 rounded-lg border border-gray-500">
+                    <h3 class="text-xl font-semibold mb-3 flex items-center gap-2">
+                        👨‍💻 Developer
+                    </h3>
+                    <div class="flex items-center gap-4">
+                        <div id="creatorPicture" class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-lg flex-shrink-0">
+                            👤
+                        </div>
+                        <div>
+                            <p id="creatorName" class="font-bold text-lg">Unknown Developer</p>
+                            <p id="creatorUsername" class="text-gray-400 text-sm">@unknown</p>
+                            <p id="uploadedDate" class="text-gray-500 text-xs mt-1">Uploaded: N/A</p>
+                        </div>
+                    </div>
+                    <button onclick="viewDeveloperProfile()" class="mt-3 w-full bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded text-sm font-bold">
+                        View Developer Profile
+                    </button>
+                </div> -->
+                
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-2">Description</h3>
+                    <p id="gameDescription" class="text-gray-300 leading-relaxed">Game description goes here...</p>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-2">Tags</h3>
+                    <div id="gameTags" class="flex gap-2 flex-wrap">
+                        <!-- Tags will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Game Stats -->
+                <div class="mb-6 grid grid-cols-3 gap-3">
+                    <div class="bg-gray-600 p-3 rounded text-center">
+                        <p id="playCount" class="text-2xl font-bold text-blue-400">0</p>
+                        <p class="text-xs text-gray-400">Plays</p>
+                    </div>
+                    <div class="bg-gray-600 p-3 rounded text-center">
+                        <p id="commentCount" class="text-2xl font-bold text-green-400">0</p>
+                        <p class="text-xs text-gray-400">Comments</p>
+                    </div>
+                    <div class="bg-gray-600 p-3 rounded text-center">
+                        <p id="favoriteCount" class="text-2xl font-bold text-red-400">0</p>
+                        <p class="text-xs text-gray-400">Favorites</p>
+                    </div>
+                </div>
+
+                <a href="Catagory.html" class="block w-full bg-gray-600 hover:bg-gray-700 px-4 py-3 rounded-lg text-lg font-bold text-center">
+                    Back to Catalog
+                </a>
+            </div>
+
+            <!-- Top Right: Game Scene (iframe) -->
+            <div class="col-start-3 col-span-2 bg-gray-700 h-[460px] relative rounded-lg overflow-hidden border border-gray-600">
+                <iframe id="gameFrame" src="" class="w-full h-full border-none"></iframe>
+                
+                <!-- Fullscreen Icon -->
+                <button class="absolute bottom-2 right-2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white text-xl px-3 py-2 rounded z-10"
+                    onclick="toggleFullscreen()">
+                    ⤢
+                </button>
+            </div>
+
+            <!-- Bottom: Comment Section -->
+            <div class="col-start-1 col-span-4 bg-gray-700 h-[260px] p-6 rounded-lg border border-gray-600 overflow-y-auto">
+                <h3 class="text-2xl font-bold mb-4">Comments</h3>
+                <div id="commentsSection" class="space-y-4">
+                    <p class="text-gray-400">No comments yet. Be the first to comment!</p>
+                </div>
+                
+                <div class="mt-6 border-t border-gray-600 pt-4">
+                    <textarea id="commentInput" placeholder="Write a comment..." class="w-full bg-gray-600 text-white p-2 rounded mb-2 resize-none h-12"></textarea>
+                    <button onclick="addComment()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded font-bold">
+                        Post Comment
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+        let selectedGame = null;
+        let creatorInfo = null;
+
+        // Load game data from sessionStorage
+        function loadGameData() {
+            const gameData = sessionStorage.getItem('selectedGame');
+            if (gameData) {
+                selectedGame = JSON.parse(gameData);
+                displayGameInfo();
+                loadGameInFrame();
+                fetchCreatorInfo();
+            } else {
+                document.body.innerHTML = '<p class="text-red-500 text-center mt-10">Game not found. <a href="Catagory.html" class="text-blue-400">Go back to catalog</a></p>';
+            }
+        }
+
+        // Fetch creator/developer information
+        async function fetchCreatorInfo() {
+            try {
+                if (selectedGame.creatorId) {
+                    const res = await fetch(`${API_URL}/profile/${selectedGame.creatorId}`);
+                    if (res.ok) {
+                        creatorInfo = await res.json();
+                        displayCreatorInfo();
+                    }
+                }
+            } catch (err) {
+                console.error("Error fetching creator info:", err);
+            }
+        }
+
+        // // Display creator/developer information
+        function displayCreatorInfo() {
+            if (creatorInfo) {
+                document.getElementById('creatorName').textContent = creatorInfo.fullName || 'Unknown Developer';
+                document.getElementById('creatorUsername').textContent = `@${creatorInfo.username || 'unknown'}`;
+                
+                // Format upload date
+                const uploadDate = new Date(selectedGame.createdAt);
+                const formattedDate = uploadDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                document.getElementById('uploadedDate').textContent = `Uploaded: ${formattedDate}`;
+
+                // Load creator's profile picture
+                if (creatorInfo.profilePicture) {
+                    const img = document.createElement('img');
+                    img.src = creatorInfo.profilePicture;
+                    img.alt = creatorInfo.fullName;
+                    img.className = 'w-12 h-12 rounded-full object-cover';
+                    document.getElementById('creatorPicture').innerHTML = '';
+                    document.getElementById('creatorPicture').appendChild(img);
+                }
+            }
+        }
+
+        // View developer profile
+        function viewDeveloperProfile() {
+            if (creatorInfo) {
+                // Store creator info in sessionStorage for profile page
+                sessionStorage.setItem('viewingUserId', creatorInfo._id);
+                window.location.href = 'Profile.html';
+            } else {
+                alert('Developer information not available');
+            }
+        }
+
+        // Display game information
+        function displayGameInfo() {
+            document.getElementById('gameTitle').textContent = selectedGame.title;
+            document.getElementById('gameType').textContent = `Type: ${selectedGame.gameType}`;
+            document.getElementById('gameDescription').textContent = selectedGame.fullDesc || selectedGame.shortDesc || 'No description available';
+            
+            // Display tags
+            const tagsContainer = document.getElementById('gameTags');
+            tagsContainer.innerHTML = '';
+            if (selectedGame.tags && selectedGame.tags.length > 0) {
+                selectedGame.tags.forEach(tag => {
+                    const tagEl = document.createElement('span');
+                    tagEl.className = 'bg-gray-600 px-3 py-1 rounded text-sm';
+                    tagEl.textContent = tag;
+                    tagsContainer.appendChild(tagEl);
+                });
+            } else {
+                tagsContainer.innerHTML = '<span class="text-gray-400 text-sm">No tags</span>';
+            }
+        }
+
+        // Load game in frame
+        function loadGameInFrame() {
+            const gameFrame = document.getElementById('gameFrame');
+            
+            if (selectedGame.gameFile) {
+                // Construct the URL to index.html inside the extracted game folder
+                const gameURL = `${API_URL}/${selectedGame.gameFile}/index.html`;
+                gameFrame.src = gameURL;
+                console.log("Loading game from:", gameURL);
+            } else {
+                gameFrame.innerHTML = '<p class="text-gray-400 p-4">Game file not found</p>';
+            }
+        }
+
+        // Fullscreen toggle
+        function toggleFullscreen() {
+            const gameFrame = document.getElementById('gameFrame');
+            if (gameFrame.requestFullscreen) {
+                gameFrame.requestFullscreen();
+            } else if (gameFrame.webkitRequestFullscreen) {
+                gameFrame.webkitRequestFullscreen();
+            }
+        }
+
+        // Add comment (placeholder)
+        function addComment() {
+            const commentInput = document.getElementById('commentInput');
+            const commentText = commentInput.value.trim();
+            
+            if (commentText) {
+                const commentsSection = document.getElementById('commentsSection');
+                
+                if (commentsSection.textContent.includes('No comments yet')) {
+                    commentsSection.innerHTML = '';
+                }
+                
+                const commentEl = document.createElement('div');
+                commentEl.className = 'bg-gray-600 p-3 rounded';
+                commentEl.innerHTML = `
+                    <p class="font-semibold text-blue-400">Anonymous User</p>
+                    <p class="text-gray-200 text-sm">${commentText}</p>
+                    <p class="text-xs text-gray-400 mt-1">Just now</p>
+                `;
+                commentsSection.prepend(commentEl);
+                
+                // Update comment count
+                const commentCount = parseInt(document.getElementById('commentCount').textContent) + 1;
+                document.getElementById('commentCount').textContent = commentCount;
+                
+                commentInput.value = '';
+            }
+        }
+
+        // Load game data on page load
+        loadGameData();
+    </script>
+
+</body>
+
+</html>

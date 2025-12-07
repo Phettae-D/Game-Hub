@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>User Profile - Game Hub</title>
+</head>
+
+<body class="bg-gray-900 text-gray-100 font-sans">
+
+    <!-- Navigation Bar -->
+    <div class="w-full bg-gray-800 border-b border-gray-700 p-4 flex items-center justify-between">
+        <div class="flex items-center space-x-10">
+            <div class="text-3xl font-bold">
+                <img src="/Image/WebLogo.png" alt="Web Logo" class="h-12 w-12" />
+            </div>
+            <a href="HomePage.html" class="text-2xl font-semibold hover:text-blue-400">Home</a>
+            <a href="Catagory.html" class="text-2xl font-semibold hover:text-blue-400">Catalog</a>
+            <a href="#" class="text-2xl font-semibold hover:text-blue-400">Developer Logs</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <input type="text" placeholder="Search"
+                class="w-64 bg-gray-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-blue-600" />
+            <button onclick="logout()"
+                class="w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 flex items-center justify-center text-xl"
+                title="Logout">
+                🚪
+            </button>
+        </div>
+    </div>
+
+    <!-- Profile Container -->
+    <div class="max-w-6xl mx-auto px-4 py-12">
+
+        <!-- Profile Header -->
+        <div class="bg-gray-800 border border-gray-700 rounded-lg p-8 mb-8">
+            <div class="flex items-center space-x-8">
+                <!-- Profile Picture -->
+                <div id="profilePicture"
+                    class="w-32 h-32 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-5xl">
+                    👤
+                </div>
+
+                <!-- Profile Info -->
+                <div class="flex-1">
+                    <h1 id="profileFullName" class="text-4xl font-bold mb-2">Loading...</h1>
+                    <p id="profileUsername" class="text-xl text-gray-400 mb-2">@loading</p>
+                    <p id="profileEmail" class="text-lg text-blue-400 mb-4">Loading...</p>
+                    <button onclick="window.location.href='SettingProfilePage.html'"
+                        class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-bold">
+                        Edit Profile
+                    </button>
+                </div>
+            </div>
+
+            <!-- Profile Bio -->
+            <div class="mt-6">
+                <h2 class="text-2xl font-semibold mb-2">Bio</h2>
+                <p id="profileBio" class="text-gray-300"></p>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-gray-800 border border-gray-700 rounded-lg p-6 text-center">
+                <h3 class="text-3xl font-bold text-blue-400 mb-2">0</h3>
+                <p class="text-gray-400">Games Played</p>
+            </div>
+            <div class="bg-gray-800 border border-gray-700 rounded-lg p-6 text-center">
+                <h3 class="text-3xl font-bold text-green-400 mb-2">0</h3>
+                <p class="text-gray-400">Games Uploaded</p>
+            </div>
+            <div class="bg-gray-800 border border-gray-700 rounded-lg p-6 text-center">
+                <h3 id="memberSince" class="text-3xl font-bold text-purple-400 mb-2">--</h3>
+                <p class="text-gray-400">Member Since</p>
+            </div>
+        </div>
+
+        <!-- Uploaded Games Section -->
+        <div class="bg-gray-800 border border-gray-700 rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-6">Your Uploaded Games</h2>
+            <div id="uploadedGames" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <p class="text-gray-400 col-span-full">No games uploaded yet. <a href="AddPage.html"
+                        class="text-blue-400 hover:text-blue-300">Upload one now!</a></p>
+            </div>
+        </div>
+
+        <!-- Favorite Games Section -->
+        <div class="bg-gray-800 border border-gray-700 rounded-lg p-6">
+            <h2 class="text-2xl font-bold mb-6">Favorite Games</h2>
+            <div id="favoriteGames" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <p class="text-gray-400 col-span-full">No favorite games yet. <a href="Catagory.html"
+                        class="text-blue-400 hover:text-blue-300">Browse games!</a></p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+
+        // Check if user is logged in
+        function checkAuth() {
+            const authToken = sessionStorage.getItem('authToken');
+            if (!authToken) {
+                window.location.href = 'LogIn.html';
+                return false;
+            }
+            return true;
+        }
+
+        // Load and display user profile
+        function loadUserProfile() {
+            const fullName = sessionStorage.getItem('fullName');
+            const username = sessionStorage.getItem('username');
+            const email = sessionStorage.getItem('userEmail');
+            const userId = sessionStorage.getItem('userId');
+            const bio = sessionStorage.getItem('userBio');
+            const profilePictureUrl = localStorage.getItem('profilePicture');
+
+            // Display user info
+            document.getElementById('profileFullName').textContent = fullName || 'User';
+            document.getElementById('profileUsername').textContent = `@${username || 'user'}`;
+            document.getElementById('profileEmail').textContent = email || 'No email';
+            document.getElementById('profileBio').textContent = bio || 'This user has not set up a bio yet.';
+
+            // Load and display profile picture
+            if (profilePictureUrl) {
+                const img = document.createElement('img');
+                img.src = profilePictureUrl;
+                img.alt = 'Profile Picture';
+                img.className = 'w-full h-full object-cover rounded-full';
+                img.onload = () => {
+                    document.getElementById('profilePicture').innerHTML = '';
+                    document.getElementById('profilePicture').appendChild(img);
+                };
+                img.onerror = () => {
+                    document.getElementById('profilePicture').textContent = '👤';
+                };
+            }
+
+            // Get current date and display as member since
+            const today = new Date();
+            const formattedDate = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('memberSince').textContent = formattedDate;
+        }
+
+        // Logout user
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('authToken');
+                sessionStorage.removeItem('userId');
+                sessionStorage.removeItem('username');
+                sessionStorage.removeItem('fullName');
+                sessionStorage.removeItem('userEmail');
+                sessionStorage.removeItem('userBio');
+                localStorage.removeItem('rememberedEmail');
+                window.location.href = 'LogIn.html';
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            if (checkAuth()) {
+                loadUserProfile();
+            }
+        });
+    </script>
+
+</body>
+
+</html>

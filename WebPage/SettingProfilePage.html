@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Settings - Game Hub</title>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans">
+    
+    <!-- Navigation Bar -->
+    <div class="w-full bg-gray-800 border-b border-gray-700 p-4 flex items-center justify-between">
+        <div class="flex items-center space-x-10">
+            <div class="text-3xl font-bold">
+                <img src="/Image/WebLogo.png" alt="Web Logo" class="h-12 w-12" />
+            </div>
+            <a href="HomePage.html" class="text-2xl font-semibold hover:text-blue-400">Home</a>
+            <a href="Catagory.html" class="text-2xl font-semibold hover:text-blue-400">Catalog</a>
+            <a href="#" class="text-2xl font-semibold hover:text-blue-400">Developer Logs</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <input type="text" placeholder="Search"
+                class="w-64 bg-gray-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-blue-600" />
+            <button onclick="window.location.href='Profile.html'" class="w-12 h-12 rounded-full bg-gray-600 hover:bg-gray-500 flex items-center justify-center text-xl">
+                👤
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 py-12">
+        
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold mb-2">Profile Settings</h1>
+            <p class="text-gray-400">Manage your account information</p>
+        </div>
+
+        <!-- Settings Container -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            
+            <!-- Sidebar Tabs -->
+            <div class="md:col-span-1">
+                <div class="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden">
+                    <button onclick="switchTab('profile')" class="tab-btn w-full text-left px-4 py-3 bg-blue-600 hover:bg-blue-700 border-b border-gray-700 font-semibold" data-tab="profile">
+                        👤 Profile
+                    </button>
+                    <button onclick="switchTab('picture')" class="tab-btn w-full text-left px-4 py-3 hover:bg-gray-700 border-b border-gray-700 font-semibold" data-tab="picture">
+                        🖼️ Picture
+                    </button>
+                    <button onclick="switchTab('password')" class="tab-btn w-full text-left px-4 py-3 hover:bg-gray-700 border-b border-gray-700 font-semibold" data-tab="password">
+                        🔐 Password
+                    </button>
+                    <button onclick="switchTab('privacy')" class="tab-btn w-full text-left px-4 py-3 hover:bg-gray-700 border-b border-gray-700 font-semibold" data-tab="privacy">
+                        🔒 Privacy
+                    </button>
+                    <button onclick="switchTab('notifications')" class="tab-btn w-full text-left px-4 py-3 hover:bg-gray-700 font-semibold" data-tab="notifications">
+                        🔔 Notifications
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="md:col-span-3">
+                
+                <!-- Profile Tab -->
+                <div id="profile-tab" class="tab-content bg-gray-800 border border-gray-700 rounded-lg p-6">
+                    <h2 class="text-2xl font-bold mb-6">Edit Profile</h2>
+                    
+                    <form id="profileForm" class="space-y-6">
+                        
+                        <!-- Full Name -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Full Name</label>
+                            <input 
+                                id="fullName" 
+                                type="text" 
+                                placeholder="Enter your full name"
+                                class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                            />
+                        </div>
+
+                        <!-- Username -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Username</label>
+                            <input 
+                                id="username" 
+                                type="text" 
+                                placeholder="Enter your username"
+                                disabled
+                                class="w-full bg-gray-600 border border-gray-600 rounded-lg px-4 py-3 cursor-not-allowed opacity-70"
+                            />
+                            <p class="text-xs text-gray-400 mt-1">Username cannot be changed</p>
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Email Address</label>
+                            <input 
+                                id="email" 
+                                type="email" 
+                                placeholder="Enter your email"
+                                disabled
+                                class="w-full bg-gray-600 border border-gray-600 rounded-lg px-4 py-3 cursor-not-allowed opacity-70"
+                            />
+                            <p class="text-xs text-gray-400 mt-1">Email cannot be changed</p>
+                        </div>
+
+                        <!-- Bio -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Bio</label>
+                            <textarea 
+                                id="bio" 
+                                placeholder="Tell us about yourself..."
+                                rows="4"
+                                class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600 resize-none"
+                            ></textarea>
+                            <p class="text-xs text-gray-400 mt-1">Max 200 characters</p>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="flex gap-4">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-bold">
+                                Save Changes
+                            </button>
+                            <button type="button" onclick="window.location.href='Profile.html'" class="bg-gray-600 hover:bg-gray-700 px-6 py-2 rounded-lg font-bold">
+                                Cancel
+                            </button>
+                        </div>
+
+                        <!-- Message -->
+                        <div id="profileMessage" class="hidden rounded-lg px-4 py-3"></div>
+                    </form>
+                </div>
+
+                <!-- Picture Tab -->
+                <div id="picture-tab" class="tab-content hidden bg-gray-800 border border-gray-700 rounded-lg p-6">
+                    <h2 class="text-2xl font-bold mb-6">Profile Picture</h2>
+                    
+                    <form id="pictureForm" class="space-y-6">
+                        
+                        <!-- Current Picture Preview -->
+                        <div class="text-center">
+                            <div id="picturePreview" class="w-48 h-48 mx-auto rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-6xl mb-4 overflow-hidden shadow-lg">
+                                👤
+                            </div>
+                            <p class="text-gray-400 text-sm mb-4">Current profile picture</p>
+                            <div id="previewStatus" class="text-sm text-gray-300">
+                                <span id="previewLabel" class="text-gray-400">No image selected</span>
+                            </div>
+                        </div>
+
+                        <!-- File Upload -->
+                        <div class="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center hover:border-blue-600 transition cursor-pointer" id="dropZone">
+                            <input 
+                                type="file" 
+                                id="pictureInput" 
+                                accept="image/*"
+                                class="hidden"
+                            />
+                            <div class="text-5xl mb-2">📸</div>
+                            <p class="text-gray-300 font-semibold mb-1">Click to upload or drag and drop</p>
+                            <p class="text-gray-400 text-sm">PNG, JPG, GIF up to 10MB</p>
+                        </div>
+
+                        <!-- File Info -->
+                        <div id="fileInfo" class="hidden bg-gray-700 p-4 rounded-lg border border-gray-600">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-xs text-gray-400 mb-1">File name</p>
+                                    <p class="text-sm font-semibold" id="fileName">N/A</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-400 mb-1">File size</p>
+                                    <p class="text-sm font-semibold" id="fileSize">N/A</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-400 mb-1">Dimensions</p>
+                                    <p class="text-sm font-semibold" id="fileDimensions">N/A</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-400 mb-1">Type</p>
+                                    <p class="text-sm font-semibold" id="fileType">N/A</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="flex gap-4">
+                            <button type="submit" id="uploadBtn" disabled class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed px-6 py-2 rounded-lg font-bold">
+                                Upload Picture
+                            </button>
+                            <button type="button" onclick="resetPicture()" class="bg-gray-600 hover:bg-gray-700 px-6 py-2 rounded-lg font-bold">
+                                Clear
+                            </button>
+                        </div>
+
+                        <!-- Message -->
+                        <div id="pictureMessage" class="hidden rounded-lg px-4 py-3"></div>
+                    </form>
+                </div>
+
+                <!-- Password Tab -->
+                <div id="password-tab" class="tab-content hidden bg-gray-800 border border-gray-700 rounded-lg p-6">
+                    <h2 class="text-2xl font-bold mb-6">Change Password</h2>
+                    
+                    <form id="passwordForm" class="space-y-6">
+                        
+                        <!-- Current Password -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Current Password</label>
+                            <div class="relative">
+                                <input 
+                                    id="currentPassword" 
+                                    type="password" 
+                                    placeholder="Enter your current password"
+                                    class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                />
+                                <button type="button" onclick="togglePasswordField('currentPassword')" class="absolute right-3 top-3 text-gray-400 hover:text-gray-200">
+                                    👁️
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- New Password -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">New Password</label>
+                            <div class="relative">
+                                <input 
+                                    id="newPassword" 
+                                    type="password" 
+                                    placeholder="Enter new password"
+                                    class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                />
+                                <button type="button" onclick="togglePasswordField('newPassword')" class="absolute right-3 top-3 text-gray-400 hover:text-gray-200">
+                                    👁️
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Confirm New Password -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Confirm New Password</label>
+                            <div class="relative">
+                                <input 
+                                    id="confirmPassword" 
+                                    type="password" 
+                                    placeholder="Confirm new password"
+                                    class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                />
+                                <button type="button" onclick="togglePasswordField('confirmPassword')" class="absolute right-3 top-3 text-gray-400 hover:text-gray-200">
+                                    👁️
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="flex gap-4">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-bold">
+                                Update Password
+                            </button>
+                            <button type="button" onclick="document.getElementById('passwordForm').reset()" class="bg-gray-600 hover:bg-gray-700 px-6 py-2 rounded-lg font-bold">
+                                Clear
+                            </button>
+                        </div>
+
+                        <!-- Message -->
+                        <div id="passwordMessage" class="hidden rounded-lg px-4 py-3"></div>
+                    </form>
+                </div>
+
+                <!-- Privacy Tab -->
+                <div id="privacy-tab" class="tab-content hidden bg-gray-800 border border-gray-700 rounded-lg p-6">
+                    <h2 class="text-2xl font-bold mb-6">Privacy Settings</h2>
+                    
+                    <form id="privacyForm" class="space-y-6">
+                        
+                        <!-- Profile Visibility -->
+                        <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
+                            <div>
+                                <h3 class="font-semibold">Public Profile</h3>
+                                <p class="text-sm text-gray-400">Allow others to see your profile</p>
+                            </div>
+                            <input type="checkbox" id="publicProfile" class="w-6 h-6 cursor-pointer" checked />
+                        </div>
+
+                        <!-- Show Games -->
+                        <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
+                            <div>
+                                <h3 class="font-semibold">Show My Games</h3>
+                                <p class="text-sm text-gray-400">Display your uploaded games publicly</p>
+                            </div>
+                            <input type="checkbox" id="showGames" class="w-6 h-6 cursor-pointer" checked />
+                        </div>
+
+                        <!-- Show Activity -->
+                        <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
+                            <div>
+                                <h3 class="font-semibold">Show Activity</h3>
+                                <p class="text-sm text-gray-400">Let others see your gaming activity</p>
+                            </div>
+                            <input type="checkbox" id="showActivity" class="w-6 h-6 cursor-pointer" checked />
+                        </div>
+
+                        <!-- Allow Messages -->
+                        <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
+                            <div>
+                                <h3 class="font-semibold">Allow Messages</h3>
+                                <p class="text-sm text-gray-400">Allow other users to send you messages</p>
+                            </div>
+                            <input type="checkbox" id="allowMessages" class="w-6 h-6 cursor-pointer" checked />
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="flex gap-4 pt-4">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-bold">
+                                Save Privacy Settings
+                            </button>
+                        </div>
+
+                        <!-- Message -->
+                        <div id="privacyMessage" class="hidden rounded-lg px-4 py-3"></div>
+                    </form>
+                </div>
+
+                <!-- Notifications Tab -->
+                <div id="notifications-tab" class="tab-content hidden bg-gray-800 border border-gray-700 rounded-lg p-6">
+                    <h2 class="text-2xl font-bold mb-6">Notification Settings</h2>
+                    
+                    <form id="notificationsForm" class="space-y-6">
+                        
+                        <!-- Email Notifications -->
+                        <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
+                            <div>
+                                <h3 class="font-semibold">Email Notifications</h3>
+                                <p class="text-sm text-gray-400">Receive updates via email</p>
+                            </div>
+                            <input type="checkbox" id="emailNotifications" class="w-6 h-6 cursor-pointer" checked />
+                        </div>
+
+                        <!-- Game Updates -->
+                        <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
+                            <div>
+                                <h3 class="font-semibold">Game Updates</h3>
+                                <p class="text-sm text-gray-400">Get notified about new games</p>
+                            </div>
+                            <input type="checkbox" id="gameUpdates" class="w-6 h-6 cursor-pointer" checked />
+                        </div>
+
+                        <!-- Comments on Games -->
+                        <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
+                            <div>
+                                <h3 class="font-semibold">Comments on My Games</h3>
+                                <p class="text-sm text-gray-400">Notify when users comment on your games</p>
+                            </div>
+                            <input type="checkbox" id="commentsNotifications" class="w-6 h-6 cursor-pointer" checked />
+                        </div>
+
+                        <!-- Promotions -->
+                        <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
+                            <div>
+                                <h3 class="font-semibold">Promotions & Offers</h3>
+                                <p class="text-sm text-gray-400">Receive promotional emails</p>
+                            </div>
+                            <input type="checkbox" id="promotions" class="w-6 h-6 cursor-pointer" checked />
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="flex gap-4 pt-4">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-bold">
+                                Save Notification Settings
+                            </button>
+                        </div>
+
+                        <!-- Message -->
+                        <div id="notificationsMessage" class="hidden rounded-lg px-4 py-3"></div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="mt-12 bg-red-900 border border-red-700 rounded-lg p-6">
+            <h2 class="text-2xl font-bold text-red-400 mb-6">Danger Zone</h2>
+            
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-4 bg-red-800 rounded-lg">
+                    <div>
+                        <h3 class="font-semibold">Delete Account</h3>
+                        <p class="text-sm text-gray-300">Permanently delete your account and all data</p>
+                    </div>
+                    <button type="button" onclick="deleteAccount()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-bold">
+                        Delete
+                    </button>
+                </div>
+                
+                <div class="flex items-center justify-between p-4 bg-red-800 rounded-lg">
+                    <div>
+                        <h3 class="font-semibold">Logout</h3>
+                        <p class="text-sm text-gray-300">Sign out from this device</p>
+                    </div>
+                    <button type="button" onclick="logout()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-bold">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+        let selectedFile = null;
+
+        // Check if user is logged in
+        function checkAuth() {
+            const authToken = sessionStorage.getItem('authToken');
+            if (!authToken) {
+                window.location.href = 'LogIn.html';
+                return false;
+            }
+            return true;
+        }
+
+        // Switch between tabs
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.add('hidden'));
+
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-blue-600');
+                btn.classList.add('hover:bg-gray-700');
+                if (btn.dataset.tab === tabName) {
+                    btn.classList.add('bg-blue-600');
+                    btn.classList.remove('hover:bg-gray-700');
+                }
+            });
+        }
+
+        // Toggle password visibility
+        function togglePasswordField(fieldId) {
+            const field = document.getElementById(fieldId);
+            field.type = field.type === 'password' ? 'text' : 'password';
+        }
+
+        // Load user profile data
+        function loadProfileData() {
+            const fullName = sessionStorage.getItem('fullName');
+            const username = sessionStorage.getItem('username');
+            const email = sessionStorage.getItem('userEmail');
+            const bio = sessionStorage.getItem('userBio') || '';
+            const profilePictureUrl = localStorage.getItem('profilePicture');
+
+            document.getElementById('fullName').value = fullName || '';
+            document.getElementById('username').value = username || '';
+            document.getElementById('email').value = email || '';
+            document.getElementById('bio').value = bio;
+
+            // Load profile picture
+            if (profilePictureUrl) {
+                const img = document.createElement('img');
+                img.src = profilePictureUrl;
+                img.alt = 'Profile';
+                img.className = 'w-full h-full object-cover';
+                img.onload = () => {
+                    document.getElementById('picturePreview').innerHTML = '';
+                    document.getElementById('picturePreview').appendChild(img);
+                    document.getElementById('previewLabel').textContent = '✅ Current profile picture loaded';
+                };
+                img.onerror = () => {
+                    document.getElementById('previewLabel').textContent = '⚠️ Failed to load current picture';
+                };
+            }
+        }
+
+        // Picture upload - Click to upload
+        document.getElementById('dropZone').addEventListener('click', () => {
+            document.getElementById('pictureInput').click();
+        });
+
+        // Picture upload - Drag and drop
+        document.getElementById('dropZone').addEventListener('dragover', (e) => {
+            e.preventDefault();
+            document.getElementById('dropZone').classList.add('border-blue-600', 'bg-blue-900');
+        });
+
+        document.getElementById('dropZone').addEventListener('dragleave', () => {
+            document.getElementById('dropZone').classList.remove('border-blue-600', 'bg-blue-900');
+        });
+
+        document.getElementById('dropZone').addEventListener('drop', (e) => {
+            e.preventDefault();
+            document.getElementById('dropZone').classList.remove('border-blue-600', 'bg-blue-900');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileSelect(files[0]);
+            }
+        });
+
+        // Picture input change
+        document.getElementById('pictureInput').addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+
+        // Handle file selection with preview
+        function handleFileSelect(file) {
+            const maxSize = 10 * 1024 * 1024; // 10MB
+            const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+            if (!validTypes.includes(file.type)) {
+                alert('❌ Please upload a valid image file (PNG, JPG, GIF, WebP)');
+                return;
+            }
+
+            if (file.size > maxSize) {
+                alert('❌ File size must be less than 10MB');
+                return;
+            }
+
+            selectedFile = file;
+
+            // Show file info
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = (file.size / 1024).toFixed(2) + ' KB';
+            document.getElementById('fileType').textContent = file.type.split('/')[1].toUpperCase();
+            document.getElementById('fileInfo').classList.remove('hidden');
+
+            // Show preview with image dimensions
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    document.getElementById('fileDimensions').textContent = `${img.width} × ${img.height}px`;
+                    
+                    // Update preview
+                    const previewImg = document.createElement('img');
+                    previewImg.src = e.target.result;
+                    previewImg.alt = 'Preview';
+                    previewImg.className = 'w-full h-full object-cover';
+                    
+                    document.getElementById('picturePreview').innerHTML = '';
+                    document.getElementById('picturePreview').appendChild(previewImg);
+                    document.getElementById('previewLabel').textContent = '📸 Preview - Ready to upload';
+                    document.getElementById('previewLabel').className = 'text-green-400';
+                    
+                    // Enable upload button
+                    document.getElementById('uploadBtn').disabled = false;
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Reset picture
+        function resetPicture() {
+            selectedFile = null;
+            document.getElementById('pictureInput').value = '';
+            document.getElementById('fileInfo').classList.add('hidden');
+            document.getElementById('uploadBtn').disabled = true;
+            document.getElementById('previewLabel').className = 'text-gray-400';
+            document.getElementById('previewLabel').textContent = 'No image selected';
+            
+            const profilePicture = localStorage.getItem('profilePicture');
+            if (profilePicture) {
+                const img = document.createElement('img');
+                img.src = profilePicture;
+                img.alt = 'Profile';
+                img.className = 'w-full h-full object-cover';
+                document.getElementById('picturePreview').innerHTML = '';
+                document.getElementById('picturePreview').appendChild(img);
+                document.getElementById('previewLabel').textContent = '✅ Current profile picture';
+                document.getElementById('previewLabel').className = 'text-gray-400';
+            } else {
+                document.getElementById('picturePreview').innerHTML = '👤';
+            }
+        }
+
+        // Handle picture form submission
+        document.getElementById('pictureForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!selectedFile) {
+                const pictureMessage = document.getElementById('pictureMessage');
+                pictureMessage.textContent = '❌ Please select an image';
+                pictureMessage.className = 'bg-red-900 border border-red-600 text-red-200 px-4 py-3 rounded-lg';
+                pictureMessage.classList.remove('hidden');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('picture', selectedFile);
+            formData.append('userId', sessionStorage.getItem('userId'));
+
+            const pictureMessage = document.getElementById('pictureMessage');
+            pictureMessage.textContent = '⏳ Uploading...';
+            pictureMessage.className = 'bg-blue-900 border border-blue-600 text-blue-200 px-4 py-3 rounded-lg';
+            pictureMessage.classList.remove('hidden');
+
+            try {
+                const res = await fetch(`${API_URL}/profile/${sessionStorage.getItem('userId')}/picture`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
+                    },
+                    body: formData
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    localStorage.setItem('profilePicture', data.picturePath);
+                    
+                    pictureMessage.textContent = '✅ Profile picture updated successfully!';
+                    pictureMessage.className = 'bg-green-900 border border-green-600 text-green-200 px-4 py-3 rounded-lg';
+                    
+                    selectedFile = null;
+                    document.getElementById('pictureInput').value = '';
+                    document.getElementById('fileInfo').classList.add('hidden');
+                    document.getElementById('uploadBtn').disabled = true;
+                    document.getElementById('previewLabel').textContent = '✅ Picture uploaded successfully!';
+                    document.getElementById('previewLabel').className = 'text-green-400';
+                    
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    const error = await res.json();
+                    pictureMessage.textContent = `❌ ${error.error || 'Error uploading picture'}`;
+                    pictureMessage.className = 'bg-red-900 border border-red-600 text-red-200 px-4 py-3 rounded-lg';
+                }
+                pictureMessage.classList.remove('hidden');
+            } catch (err) {
+                console.error(err);
+                pictureMessage.textContent = '❌ Connection error. Make sure server is running.';
+                pictureMessage.className = 'bg-red-900 border border-red-600 text-red-200 px-4 py-3 rounded-lg';
+                pictureMessage.classList.remove('hidden');
+            }
+        });
+
+        // Handle profile form submission
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const fullName = document.getElementById('fullName').value;
+            const bio = document.getElementById('bio').value;
+            const userId = sessionStorage.getItem('userId');
+            const profileMessage = document.getElementById('profileMessage');
+
+            if (!fullName) {
+                profileMessage.textContent = '❌ Full name is required';
+                profileMessage.className = 'bg-red-900 border border-red-600 text-red-200 px-4 py-3 rounded-lg';
+                profileMessage.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/profile/${userId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
+                    },
+                    body: JSON.stringify({ fullName, bio })
+                });
+
+                if (res.ok) {
+                    sessionStorage.setItem('fullName', fullName);
+                    profileMessage.textContent = '✅ Profile updated successfully!';
+                    profileMessage.className = 'bg-green-900 border border-green-600 text-green-200 px-4 py-3 rounded-lg';
+                } else {
+                    profileMessage.textContent = '❌ Error updating profile';
+                    profileMessage.className = 'bg-red-900 border border-red-600 text-red-200 px-4 py-3 rounded-lg';
+                }
+                profileMessage.classList.remove('hidden');
+            } catch (err) {
+                console.error(err);
+                profileMessage.textContent = '❌ Connection error';
+                profileMessage.className = 'bg-red-900 border border-red-600 text-red-200 px-4 py-3 rounded-lg';
+                profileMessage.classList.remove('hidden');
+            }
+        });
+
+        // Handle password form submission
+        document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const userId = sessionStorage.getItem('userId');
+            const passwordMessage = document.getElementById('passwordMessage');
+
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                passwordMessage.textContent = '❌ All fields are required';
+                passwordMessage.className = 'bg-red-900 border border-red-600 text-red-200 px-4 py-3 rounded-lg';
+                passwordMessage.classList.remove('hidden');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                passwordMessage.textContent = '❌ New passwords do not match';
+                passwordMessage.className = 'bg-red-900 border border-red-600 text-red-200 px-4 py-3 rounded-lg';
+                passwordMessage.classList.remove('hidden');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                passwordMessage.textContent = '❌ Password must be at least 6 characters';
+                passwordMessage.className = 'bg-red-900 border border-red-600 text-red-200 px-4 py-3 rounded-lg';
+                passwordMessage.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/profile/${userId}/password`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
+                    },
+                    body: JSON.stringify({ currentPassword, newPassword })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    passwordMessage.textContent = '✅ Password updated successfully!';
+                    passwordMessage.className = 'bg-green-900 border border-green-600 text-green-200 px-4 py-3 rounded-lg';
+                    document.getElementById('passwordForm').reset();
+                } else {
+                    passwordMessage.textContent = `❌ ${data.message || 'Error updating password'}`;
+                    passwordMessage.className = 'bg-red-900 border border-red-600 text-red-200 px-4 py-3 rounded-lg';
+                }
+                passwordMessage.classList.remove('hidden');
+            } catch (err) {
+                console.error(err);
+                passwordMessage.textContent = '❌ Connection error';
+                passwordMessage.className = 'bg-red-900 border border-red-600 text-red-200 px-4 py-3 rounded-lg';
+                passwordMessage.classList.remove('hidden');
+            }
+        });
+
+        // Handle privacy form submission
+        document.getElementById('privacyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const privacyMessage = document.getElementById('privacyMessage');
+            privacyMessage.textContent = '✅ Privacy settings saved!';
+            privacyMessage.className = 'bg-green-900 border border-green-600 text-green-200 px-4 py-3 rounded-lg';
+            privacyMessage.classList.remove('hidden');
+        });
+
+        // Handle notifications form submission
+        document.getElementById('notificationsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const notificationsMessage = document.getElementById('notificationsMessage');
+            notificationsMessage.textContent = '✅ Notification settings saved!';
+            notificationsMessage.className = 'bg-green-900 border border-green-600 text-green-200 px-4 py-3 rounded-lg';
+            notificationsMessage.classList.remove('hidden');
+        });
+
+        // Logout user
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('authToken');
+                sessionStorage.removeItem('userId');
+                sessionStorage.removeItem('username');
+                sessionStorage.removeItem('fullName');
+                sessionStorage.removeItem('userEmail');
+                localStorage.removeItem('rememberedEmail');
+                window.location.href = 'LogIn.html';
+            }
+        }
+
+        // Delete account
+        function deleteAccount() {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                if (confirm('Type "DELETE" to confirm account deletion')) {
+                    const userId = sessionStorage.getItem('userId');
+                    
+                    fetch(`${API_URL}/profile/${userId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
+                        }
+                    }).then(res => {
+                        if (res.ok) {
+                            alert('Account deleted successfully');
+                            logout();
+                        }
+                    }).catch(err => console.error(err));
+                }
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            if (checkAuth()) {
+                loadProfileData();
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Game Hub - Play Amazing Games Online</title>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans">
+
+    <!-- Navigation Bar -->
+    <div class="w-full bg-gray-800 border-b border-gray-700 p-4 flex items-center justify-between">
+        <div class="flex items-center space-x-10">
+            <div class="text-3xl font-bold">
+                <img src="/Image/WebLogo.png" alt="Web Logo" class="h-12 w-12" />
+            </div>
+            <a href="HomePage.html" class="text-2xl font-semibold hover:text-blue-400">Game Hub</a>
+            <a href="Catagory.html" class="text-lg font-semibold hover:text-blue-400">Catalog</a>   
+            <a href="#" class="text-lg font-semibold hover:text-blue-400">About</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <input type="text" placeholder="Search games..." 
+                class="w-64 bg-gray-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-blue-600" />
+            <button id="userMenuBtn" onclick="toggleUserMenu()" class="w-12 h-12 rounded-full bg-gray-600 hover:bg-gray-500 flex items-center justify-center text-xl">
+                👤
+            </button>
+            
+            <!-- User Dropdown Menu -->
+            <div id="userMenu" class="hidden absolute top-16 right-4 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50">
+                <a href="Profile.html" class="block px-4 py-2 hover:bg-gray-700">Profile</a>
+                <a href="AddPage.html" class="block px-4 py-2 hover:bg-gray-700">Upload Game</a>
+                <button onclick="logout()" class="w-full text-left px-4 py-2 hover:bg-gray-700 text-red-400">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="w-full bg-gradient-to-r from-blue-600 to-purple-600 py-16">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <h1 class="text-5xl font-bold mb-4">Welcome to Game Hub</h1>
+            <p class="text-xl text-gray-100 mb-8">Play the best games online, right in your browser. No installation needed!</p>
+            <div class="flex gap-4 justify-center">
+                <button onclick="navigateToCatalog()" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition">
+                    Browse Games
+                </button>
+                <button onclick="toggleAbout()" class="bg-blue-700 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-800 transition">
+                    Learn More
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Games Section -->
+    <div id="featuredGames" class="max-w-6xl mx-auto px-4 py-16">
+        <h2 class="text-4xl font-bold mb-8 text-center">Featured Games</h2>
+        <div id="featuredContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Games will be loaded here -->
+            <div class="text-center py-8">
+                <p class="text-gray-400">Loading featured games...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Section -->
+    <div class="bg-gray-800 border-t border-gray-700 py-16">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div>
+                    <h3 id="gameCount" class="text-4xl font-bold text-blue-400 mb-2">0</h3>
+                    <p class="text-gray-400 text-lg">Games Available</p>
+                </div>
+                <div>
+                    <h3 class="text-4xl font-bold text-green-400 mb-2">10K+</h3>
+                    <p class="text-gray-400 text-lg">Active Players</p>
+                </div>
+                <div>
+                    <h3 class="text-4xl font-bold text-purple-400 mb-2">24/7</h3>
+                    <p class="text-gray-400 text-lg">Online Support</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section (Hidden) -->
+    <div id="aboutSection" class="hidden bg-gray-800 border-t border-gray-700 py-16">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-6">About Game Hub</h2>
+            <p class="text-gray-300 text-lg leading-relaxed mb-4">
+                Game Hub is a platform dedicated to bringing you the best gaming experience. We host a wide variety of games 
+                that you can play directly in your browser without any installation or download required.
+            </p>
+            <p class="text-gray-300 text-lg leading-relaxed mb-4">
+                Our mission is to make gaming accessible to everyone, everywhere. Whether you're a casual gamer or a hardcore 
+                enthusiast, you'll find something you love on our platform.
+            </p>
+            <h3 class="text-2xl font-bold mt-8 mb-4">Why Choose Game Hub?</h3>
+            <ul class="space-y-3 text-gray-300">
+                <li>✅ No installation required - play instantly</li>
+                <li>✅ Wide variety of games across all genres</li>
+                <li>✅ Safe and secure gaming environment</li>
+                <li>✅ Regular updates with new games</li>
+                <li>✅ Community-driven platform</li>
+            </ul>
+            <button onclick="toggleAbout()" class="mt-6 bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-bold">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="bg-gray-800 border-t border-gray-700 py-8">
+        <div class="max-w-6xl mx-auto px-4 text-center text-gray-500 text-sm">
+            <p>&copy; 2024 Game Hub. All rights reserved.</p>
+            <p class="mt-2">
+                <a href="#" class="hover:text-blue-400">Privacy Policy</a> | 
+                <a href="#" class="hover:text-blue-400">Terms of Service</a> | 
+                <a href="#" class="hover:text-blue-400">Contact Us</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+
+        // Check if user is logged in
+        function checkAuth() {
+            const authToken = sessionStorage.getItem('authToken');
+            const userMenu = document.getElementById('userMenu');
+            const userMenuBtn = document.getElementById('userMenuBtn');
+
+            if (!authToken) {
+                // User not logged in - redirect to login
+                console.log("No auth token found. User should be redirected to login.");
+                // Uncomment the line below to auto-redirect to login
+                // window.location.href = 'LogIn.html';
+            } else {
+                // User is logged in - show profile icon
+                userMenuBtn.style.display = 'flex';
+            }
+        }
+
+        // Toggle user menu
+        function toggleUserMenu() {
+            const userMenu = document.getElementById('userMenu');
+            userMenu.classList.toggle('hidden');
+        }
+
+        // Logout user
+        function logout() {
+            sessionStorage.removeItem('authToken');
+            sessionStorage.removeItem('userId');
+            localStorage.removeItem('userEmail');
+            window.location.href = 'LogIn.html';
+        }
+
+        // Navigate to catalog
+        function navigateToCatalog() {
+            const authToken = sessionStorage.getItem('authToken');
+            if (!authToken) {
+                alert('Please login first to browse games');
+                window.location.href = 'LogIn.html';
+            } else {
+                window.location.href = 'Catagory.html';
+            }
+        }
+
+        // Toggle about section
+        function toggleAbout() {
+            const aboutSection = document.getElementById('aboutSection');
+            aboutSection.classList.toggle('hidden');
+            if (!aboutSection.classList.contains('hidden')) {
+                aboutSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Load featured games
+        async function loadFeaturedGames() {
+            try {
+                const res = await fetch(`${API_URL}/games`);
+                if (!res.ok) throw new Error('Failed to fetch games');
+                
+                const games = await res.json();
+                const featuredContainer = document.getElementById('featuredContainer');
+                
+                // Update game count
+                document.getElementById('gameCount').textContent = games.length;
+
+                // Display featured games (first 8)
+                featuredContainer.innerHTML = '';
+                games.slice(0, 8).forEach(game => {
+                    const gameCard = document.createElement('a');
+                    gameCard.href = 'javascript:void(0)';
+                    gameCard.className = 'game-card block rounded-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer';
+                    gameCard.onclick = () => playGame(game);
+                    gameCard.innerHTML = `
+                        <div class="h-40 bg-gray-700 flex items-center justify-center overflow-hidden">
+                            ${game.coverImage ? `<img src="${API_URL}/${game.coverImage}" alt="${game.title}" class="w-full h-full object-cover hover:scale-110 transition-transform" />` : '<span class="text-gray-400">Game Cover</span>'}
+                        </div>
+                        <div class="p-4 bg-gray-700 border border-gray-600">
+                            <h3 class="text-lg font-bold mb-2">${game.title}</h3>
+                            <p class="text-gray-300 text-sm mb-2">${game.shortDesc || 'No description'}</p>
+                            <p class="text-xs text-blue-400">${game.gameType}</p>
+                            <button class="mt-3 w-full bg-cyan-600 hover:bg-cyan-700 px-3 py-2 rounded text-sm font-bold">
+                                Play Now
+                            </button>
+                        </div>
+                    `;
+                    featuredContainer.appendChild(gameCard);
+                });
+
+                if (games.length === 0) {
+                    featuredContainer.innerHTML = '<p class="text-gray-400 col-span-full text-center py-8">No games available yet</p>';
+                }
+            } catch (err) {
+                console.error("Error loading games:", err);
+                document.getElementById('featuredContainer').innerHTML = `<p class="text-red-500 col-span-full">Failed to load games. Make sure the server is running.</p>`;
+            }
+        }
+
+        // Play game
+        function playGame(game) {
+            const authToken = sessionStorage.getItem('authToken');
+            if (!authToken) {
+                alert('Please login first to play games');
+                window.location.href = 'LogIn.html';
+            } else {
+                sessionStorage.setItem('selectedGame', JSON.stringify(game));
+                window.location.href = 'GamePage.html';
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            checkAuth();
+            loadFeaturedGames();
+        });
+
+        // Close user menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const userMenu = document.getElementById('userMenu');
+            const userMenuBtn = document.getElementById('userMenuBtn');
+            if (!userMenuBtn.contains(e.target) && !userMenu.contains(e.target)) {
+                userMenu.classList.add('hidden');
+            }
+        });
+    </script>
+
+</body>
+</html>

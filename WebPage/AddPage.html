@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <title>Add Game</title>
+</head>
+
+<body class="bg-gray-900 text-gray-100 font-sans">
+    <!-- Navigation Bar -->
+    <div class="w-full bg-gray-800 border-b border-gray-700 p-4 flex items-center justify-between">
+        <div class="flex items-center space-x-10">
+            <div class="text-3xl font-bold">
+                <img src="/Image/WebLogo.png" alt="Web Logo" class="h-12 w-12" />
+            </div>
+            <a href="HomePage.html" class="text-2xl font-semibold hover:text-blue-400">Home</a>
+            <a href="Catagory.html" class="text-2xl font-semibold hover:text-blue-400">Catalog</a>
+            <a href="#" class="text-2xl font-semibold hover:text-blue-400">Developer Logs</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <input type="text" placeholder="Search"
+                class="w-64 bg-gray-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-blue-600" />
+            <a href="Profile.html" class="w-12 h-12 rounded-full bg-gray-600 hover:bg-gray-500"></a>
+        </div>
+    </div>
+
+    <!-- Main Section -->
+    <div
+        class="flex gap-8 bg-gray-800 justify-center items-start w-full max-w-6xl mx-auto mt-10 p-8 rounded-lg shadow-lg">
+
+        <!-- Form Section -->
+        <form id="gameForm" enctype="multipart/form-data"
+            class="w-2/3 p-8 bg-gray-700 rounded-lg border border-gray-600">
+            <h2 class="text-3xl font-bold mb-8 text-left">Create New Project</h2>
+
+            <div class="mb-4">
+                <label class="block mb-2 font-semibold">Title *</label>
+                <input id="title" type="text" required class="w-full p-3 rounded bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Enter game title" />
+            </div>
+
+            <div class="mb-4">
+                <label class="block mb-2 font-semibold">Short Description</label>
+                <input id="shortDesc" type="text" class="w-full p-3 rounded bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Brief description" />
+            </div>
+
+            <div class="mb-4">
+                <label class="block mb-2 font-semibold">Full Description</label>
+                <textarea id="fullDesc" class="w-full p-3 rounded bg-gray-600 h-24 resize-none focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Detailed description..."></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label class="block mb-2 font-semibold">Genre</label>
+                <input id="gameType" type="text" class="w-full p-3 rounded bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="e.g. RPG, Action, Puzzle" />
+            </div>
+
+            <div class="mb-4">
+                <label class="block mb-2 font-semibold">Tags (comma separated)</label>
+                <input id="tags" type="text" class="w-full p-3 rounded bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="e.g. action, fun, 2d" />
+            </div>
+
+            <div class="mb-6">
+                <label class="block mb-2 font-semibold">Upload Game File *</label>
+                <input id="gameFile" type="file" name="gameFile" accept=".zip" required class="w-full p-3 rounded bg-gray-600 file:bg-blue-600 file:text-white file:border-0 file:rounded file:px-4 file:py-2 file:cursor-pointer file:hover:bg-blue-700" />
+                <p class="text-xs text-gray-400 mt-2">Only .zip files are allowed (Max 500MB)</p>
+                <div id="zipCheckMessage" class="mt-2"></div>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded-lg font-bold text-lg transition">Upload Game</button>
+        </form>
+
+
+        <!-- Image Upload Section -->
+        <div class="w-1/3 bg-gray-700 p-8 rounded-lg border border-gray-600 h-fit">
+            <label class="block text-lg font-semibold mb-4">Upload Game Cover *</label>
+            <div id="imagePreview"
+                class="w-full aspect-square bg-gray-600 rounded-lg border-2 border-dashed border-gray-500 flex items-center justify-center mb-4 cursor-pointer hover:border-blue-400 transition">
+                <div id="CoverImage" class="text-center">
+                    <span class="text-4xl mb-2 block">🖼️</span>
+                    <span class="text-gray-300">Click to upload image</span>
+                </div>
+            </div>
+            <input type="file" id="UpLoadImage" accept="image/*"
+                class="w-full p-2 text-gray-100 file:bg-blue-600 file:text-white file:border-0 file:rounded file:px-4 file:py-2 file:cursor-pointer file:hover:bg-blue-700" />
+            <p class="text-xs text-gray-400 mt-2">PNG, JPG, GIF (Recommended: 300x400px)</p>
+        </div>
+    </div>
+
+    <script>
+        // FIXED FORM SUBMISSION SCRIPT
+const API_URL = 'http://localhost:3000';
+
+// Check if user is logged in
+function checkAuth() {
+    const authToken = sessionStorage.getItem('authToken');
+    if (!authToken) {
+        alert('❌ You must be logged in to upload a game');
+        window.location.href = 'LogIn.html';
+        return false;
+    }
+    return true;
+}
+
+// Image preview
+const coverImageDiv = document.getElementById("imagePreview");
+const fileInput = document.getElementById('UpLoadImage');
+
+coverImageDiv.addEventListener('click', () => {
+    fileInput.click();
+});
+
+fileInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            coverImageDiv.innerHTML = `<img src="${e.target.result}" alt="Game Cover" class="w-full h-full object-cover rounded-lg" />`;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Improved ZIP validation
+async function validateZipStructure(zipFile) {
+    try {
+        const zip = new JSZip();
+        await zip.loadAsync(zipFile);
+
+        const zipContents = Object.keys(zip.files);
+        console.log("Zip contents:", zipContents);
+
+        // Check if ANY index.html exists
+        const hasIndexHtml = zipContents.some(file => 
+            file.endsWith('index.html') && !file.startsWith('__MACOSX')
+        );
+
+        const hasBuild = zipContents.some(file => file.startsWith('Build/'));
+        const hasTemplateData = zipContents.some(file => file.startsWith('TemplateData/'));
+        const hasJs = zipContents.some(file => file.endsWith('.js'));
+        const hasHtml = zipContents.some(file => file.endsWith('.html'));
+
+        return {
+            isValid: hasIndexHtml || (hasHtml && hasJs),
+            hasIndexHtml,
+            hasBuild,
+            hasTemplateData,
+            hasJs,
+            hasHtml,
+            fileCount: zipContents.length
+        };
+    } catch (err) {
+        console.error("Error reading zip file:", err);
+        return {
+            isValid: false,
+            error: "Could not read zip file: " + err.message
+        };
+    }
+}
+
+// File input change event
+document.getElementById("gameFile").addEventListener("change", async (e) => {
+    const gameFileInput = e.target;
+    const zipCheckMessage = document.getElementById("zipCheckMessage");
+
+    if (!gameFileInput.files[0]) {
+        zipCheckMessage.innerHTML = '';
+        return;
+    }
+
+    const gameFile = gameFileInput.files[0];
+
+    if (!gameFile.name.endsWith('.zip')) {
+        zipCheckMessage.innerHTML = '<p class="text-red-500">❌ Only .zip files are allowed</p>';
+        return;
+    }
+
+    zipCheckMessage.innerHTML = '<p class="text-blue-500">⏳ Validating zip file...</p>';
+
+    const validation = await validateZipStructure(gameFile);
+
+    if (validation.isValid) {
+        zipCheckMessage.innerHTML = `
+            <p class="text-green-500">✅ Zip file is valid!</p>
+            <p class="text-xs text-green-400">Files: ${validation.fileCount} items</p>
+            <p class="text-xs text-green-400">Contains index.html: ${validation.hasIndexHtml ? '✅' : '❌'}</p>
+        `;
+    } else {
+        zipCheckMessage.innerHTML = `
+            <p class="text-yellow-500">⚠️ Warning: Validation incomplete</p>
+            <p class="text-xs text-yellow-400">Make sure your zip contains index.html</p>
+            <p class="text-xs text-yellow-400">${validation.fileCount} files found</p>
+        `;
+    }
+});
+
+// Form submission - FIXED
+document.getElementById("gameForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    if (!checkAuth()) return;
+
+    const titleInput = document.getElementById("title");
+    const gameFileInput = document.getElementById("gameFile");
+    const coverImageInput = document.getElementById("UpLoadImage");
+
+    // Validation
+    if (!titleInput.value.trim()) {
+        alert("❌ Please enter a game title");
+        return;
+    }
+
+    if (!gameFileInput.files[0]) {
+        alert("❌ Please select a game file (.zip)");
+        return;
+    }
+
+    if (!coverImageInput.files[0]) {
+        alert("❌ Please upload a game cover image");
+        return;
+    }
+
+    const gameFile = gameFileInput.files[0];
+
+    if (!gameFile.name.endsWith('.zip')) {
+        alert("❌ Only .zip files are allowed!");
+        return;
+    }
+
+    // Check file size (500MB)
+    const maxSize = 500 * 1024 * 1024;
+    if (gameFile.size > maxSize) {
+        alert("❌ File size exceeds 500MB");
+        return;
+    }
+
+    // Loading state
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = '⏳ Uploading...';
+
+    // Build FormData
+    const formData = new FormData();
+    formData.append("title", titleInput.value.trim());
+    formData.append("shortDesc", document.getElementById("shortDesc").value.trim());
+    formData.append("fullDesc", document.getElementById("fullDesc").value.trim());
+    formData.append("gameType", document.getElementById("gameType").value.trim());
+    formData.append("tags", document.getElementById("tags").value.trim());
+    formData.append("coverImage", coverImageInput.files[0]);
+    formData.append("gameFile", gameFile);
+    
+    // Optional: Add creator ID if you want to track who uploaded the game
+    const userId = sessionStorage.getItem('userId');
+    if (userId) {
+        formData.append("creatorId", userId);
+    }
+
+    // Debug logging
+    console.log("=== UPLOAD DEBUG ===");
+    console.log("Title:", titleInput.value);
+    console.log("Game file:", gameFile.name, gameFile.size, "bytes");
+    console.log("Cover image:", coverImageInput.files[0].name);
+    console.log("User ID:", userId);
+    console.log("Auth token exists:", !!sessionStorage.getItem('authToken'));
+
+    try {
+        const res = await fetch(`${API_URL}/addGame`, {
+            method: "POST",
+            body: formData,
+            // Note: Don't set Content-Type header - browser will set it with boundary
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
+            }
+        });
+
+        console.log("Response status:", res.status);
+
+        const data = await res.json();
+        console.log("Response data:", data);
+
+        if (res.ok) {
+            alert("✅ Game uploaded successfully!");
+            
+            // Reset form
+            document.getElementById("gameForm").reset();
+            document.getElementById("imagePreview").innerHTML = 
+                '<div id="CoverImage" class="text-center"><span class="text-4xl mb-2 block">🖼️</span><span class="text-gray-300">Click to upload image</span></div>';
+            document.getElementById("zipCheckMessage").innerHTML = '';
+            
+            // Redirect
+            setTimeout(() => {
+                window.location.href = 'Catagory.html';
+            }, 1500);
+        } else {
+            console.error("Upload failed:", data);
+            alert(`❌ Error: ${data.error || 'Upload failed'}\n\nDetails: ${data.details || 'Unknown error'}`);
+        }
+    } catch (err) {
+        console.error("Fetch error:", err);
+        alert(`❌ Connection Error!\n\n${err.message}\n\nMake sure the server is running on http://localhost:3000`);
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+    }
+});
+
+// Check auth on load
+window.addEventListener('load', () => {
+    checkAuth();
+});
+    </script>
+</body>
+
+</html>

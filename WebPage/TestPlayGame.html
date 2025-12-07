@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Game Page</title>
+</head>
+
+<body class="bg-gray-900 text-white font-sans">
+
+    <!-- Navigation Bar -->
+    <div class="w-full bg-gray-800 border-b border-gray-700 p-4 flex items-center justify-between">
+        <div class="flex items-center space-x-10">
+            <div class="text-3xl font-bold">
+                <img src="/Image/WebLogo.png" alt="Web Logo" class="h-10 w-10" />
+            </div>
+            <a href="Catagory.html" class="text-2xl font-semibold hover:text-blue-400">Catalog</a>
+            <a href="#" class="text-2xl font-semibold hover:text-blue-400">Developer Logs</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <input type="text" placeholder="Search"
+                class="w-64 bg-gray-700 p-2 rounded-lg outline-none focus:ring-2 focus:ring-blue-600" />
+            <a href="Profile.html" class="w-12 h-12 rounded-full bg-gray-600 hover:bg-gray-500"></a>
+        </div>
+    </div>
+
+
+    <!-- Main Content -->
+    <div class="w-[80%] mx-auto mt-10 bg-gray-300 p-6 border border-blue-600">
+
+        <div class="grid grid-cols-4 gap-4">
+
+            <!-- Left: Game Description -->
+            <div class="col-span-2 bg-gray-400 h-[850px] flex items-center justify-center text-2xl text-white">
+                
+            </div>
+
+            <!-- Top Right: Game Scene -->
+            <div class="col-start-3 col-span-2 bg-gray-400 h-[460px] relative flex items-center justify-center text-2xl text-white">
+                <span>Game Scene</span>
+
+                <!-- Fullscreen Icon -->
+                <button class="absolute bottom-2 right-2 text-black text-xl">
+                    ⤢
+                </button>
+            </div>
+
+            <!-- Bottom Right: Comment Section -->
+            <div class="col-start-1 col-span-4 bg-gray-400 h-[260px] flex items-center justify-center text-2xl text-white">
+                Comment Section
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
