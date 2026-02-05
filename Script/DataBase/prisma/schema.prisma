@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+  // Connection URL moved to prisma.config.ts per Prisma config changes.
+  // Set your connection string in Script/DataBase/.env (DATABASE_URL)
+  // and use prisma.config.ts for migrations and client options.
+
+model User {
+  id             String   @id @db.Text @map("id")
+  username       String   @unique @db.VarChar(50) @map("username")
+  email          String   @unique @db.VarChar(100) @map("email")
+  password       String   @db.VarChar(255) @map("password")
+  fullName       String?  @db.VarChar(100) @map("full_name")
+  profilePicture String?  @db.VarChar(255) @map("profile_picture")
+  bio            String?  @db.Text @map("bio")
+  createdAt      DateTime @default(now()) @db.Timestamp(3) @map("created_at")
+
+  games Game[] @relation("UserGames")
+
+  @@map("users")
+}
+
+model Game {
+  id         String   @id @db.Text @map("id")
+  title      String   @db.VarChar(200) @map("title")
+  shortDesc  String?  @db.Text @map("short_desc")
+  fullDesc   String?  @db.Text @map("full_desc")
+  gameType   String?  @db.VarChar(50) @map("game_type")
+  tags       Json?    @map("tags")
+  coverImage String?  @db.VarChar(255) @map("cover_image")
+  gameFile   String?  @db.VarChar(255) @map("game_file")
+  creatorId  String?  @db.Text @map("creator_id")
+  createdAt  DateTime @default(now()) @db.Timestamp(3) @map("created_at")
+
+  creator User? @relation("UserGames", fields: [creatorId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+
+  @@map("games")
+  @@index([creatorId], name: "games_creator_id_idx")
+}
