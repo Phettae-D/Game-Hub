@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { GameController } from "./GameController";
-import { upload } from "../../../middleware/upload";
+import { upload } from "../../../src/middleware/upload";
 
 const router = Router();
 

@@ -129,6 +129,7 @@ export class GameController {
         }
     }
 
+
     static async playGame(req: Request, res: Response) {
         try {
             const {gameId} = req.params;
