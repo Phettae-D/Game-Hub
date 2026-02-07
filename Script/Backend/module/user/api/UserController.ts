@@ -91,3 +91,67 @@ export class AuthController {
         }
     }
 }
+
+export class UserController {
+    static async getProfile(req: Request, res: Response) {
+        try {
+            const { userId } = req.params;
+            if (!userId) return res.status(400).json({ error: 'userId is required' });
+
+            const where = isNaN(Number(userId)) ? { id: userId } : { id: Number(userId) };
+
+            const user = await prisma.user.findFirst({
+                where,
+                select: {
+                    id: true,
+                    username: true,
+                    email: true,
+                    fullName: true,
+                },
+            });
+
+            if (!user) return res.status(404).json({ error: 'User not found' });
+
+            res.json({ user });
+        } catch (err: any) {
+            console.error(err);
+            res.status(500).json({ error: 'Failed to get profile', details: err.message });
+        }
+    }
+
+    static async updateProfile(req: Request, res: Response) {
+        try {
+            const { userId } = req.params;
+            const { username, email, fullName } = req.body;
+
+            if (!userId) return res.status(400).json({ error: 'userId is required' });
+
+            const where = isNaN(Number(userId)) ? { id: userId } : { id: Number(userId) };
+
+            const data: any = {};
+            if (username) data.username = username;
+            if (email) data.email = email;
+            if (fullName) data.fullName = fullName;
+
+            if (Object.keys(data).length === 0) {
+                return res.status(400).json({ error: 'No updatable fields provided' });
+            }
+
+            const updated = await prisma.user.update({
+                where,
+                data,
+                select: {
+                    id: true,
+                    username: true,
+                    email: true,
+                    fullName: true,
+                },
+            });
+
+            res.json({ message: 'Profile updated', user: updated });
+        } catch (err: any) {
+            console.error(err);
+            res.status(500).json({ error: 'Failed to update profile', details: err.message });
+        }
+    }
+}
